@@ -63,8 +63,8 @@ class StudentServiceTests {
 
     @Test
     void addStudentDetails_savesAndReturnsStudent() {
-        Student newStudent = new Student(null, "Rahul", "ME");
-        Student savedStudent = new Student(3, "Rahul", "ME");
+        Student newStudent = new Student(null, "Rahul", "ME", "A");
+        Student savedStudent = new Student(3, "Rahul", "ME", "A");
         when(studentRepository.save(newStudent)).thenReturn(savedStudent);
 
         Student result = studentService.addStudentDetails(newStudent);
@@ -72,13 +72,14 @@ class StudentServiceTests {
         assertNotNull(result.getId());
         assertEquals(3, result.getId());
         assertEquals("Rahul", result.getName());
+        assertEquals("A", result.getSection());
         verify(studentRepository, times(1)).save(newStudent);
     }
 
     @Test
     void updateStudentDetails_updatesIdAndSaves() {
-        Student updatedData = new Student(null, "Akash Updated", "IT");
-        Student savedStudent = new Student(1, "Akash Updated", "IT");
+        Student updatedData = new Student(null, "Akash Updated", "IT", "B");
+        Student savedStudent = new Student(1, "Akash Updated", "IT", "B");
         when(studentRepository.save(any(Student.class))).thenReturn(savedStudent);
 
         Student result = studentService.updateStudentDetails(updatedData, 1);
@@ -86,6 +87,7 @@ class StudentServiceTests {
         assertEquals(1, result.getId());
         assertEquals("Akash Updated", result.getName());
         assertEquals("IT", result.getBranch());
+        assertEquals("B", result.getSection());
     }
 
     @Test

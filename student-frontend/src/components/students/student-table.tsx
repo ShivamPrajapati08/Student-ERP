@@ -30,7 +30,8 @@ export function StudentTable({ students, onEdit, onDelete }: Props) {
   const filtered = students.filter(
     (s) =>
       s.name.toLowerCase().includes(search.toLowerCase()) ||
-      s.branch.toLowerCase().includes(search.toLowerCase())
+      s.branch.toLowerCase().includes(search.toLowerCase()) ||
+      (s.section ?? "").toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -63,6 +64,7 @@ export function StudentTable({ students, onEdit, onDelete }: Props) {
               </TableHead>
               <TableHead>Student</TableHead>
               <TableHead>Branch</TableHead>
+              <TableHead>Section</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -82,6 +84,11 @@ export function StudentTable({ students, onEdit, onDelete }: Props) {
                 </TableCell>
                 <TableCell>
                   <Badge variant="secondary">{student.branch}</Badge>
+                </TableCell>
+                <TableCell>
+                  <Badge variant="outline">
+                    {student.section ? `Section ${student.section}` : "—"}
+                  </Badge>
                 </TableCell>
                 <TableCell className="text-right space-x-2">
                   <Button

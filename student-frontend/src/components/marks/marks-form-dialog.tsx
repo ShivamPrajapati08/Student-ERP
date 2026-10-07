@@ -93,7 +93,7 @@ export function MarksFormDialog({
               <SelectContent>
                 {students.map((s) => (
                   <SelectItem key={s.id} value={String(s.id)}>
-                    {s.name} ({s.branch})
+                    {s.name} ({s.branch} · Section {s.section ?? "—"})
                   </SelectItem>
                 ))}
               </SelectContent>

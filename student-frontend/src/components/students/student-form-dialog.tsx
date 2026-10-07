@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BranchCombobox } from "@/components/students/branch-combobox";
+import { SectionCombobox } from "@/components/students/section-combobox";
 import { Student, StudentInput } from "@/lib/api";
 
 type Props = {
@@ -29,24 +30,27 @@ export function StudentFormDialog({
 }: Props) {
   const [name, setName] = useState("");
   const [branch, setBranch] = useState("");
+  const [section, setSection] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (editingStudent) {
       setName(editingStudent.name);
       setBranch(editingStudent.branch);
+      setSection(editingStudent.section ?? "");
     } else {
       setName("");
       setBranch("");
+      setSection("");
     }
   }, [editingStudent, open]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!branch) return;
+    if (!branch || !section) return;
     setSubmitting(true);
     try {
-      await onSubmit({ name, branch });
+      await onSubmit({ name, branch, section });
       onOpenChange(false);
     } finally {
       setSubmitting(false);
@@ -76,6 +80,10 @@ export function StudentFormDialog({
             <Label>Branch</Label>
             <BranchCombobox value={branch} onChange={setBranch} />
           </div>
+          <div className="space-y-2">
+            <Label>Section</Label>
+            <SectionCombobox value={section} onChange={setSection} />
+          </div>
           <DialogFooter>
             <Button
               type="button"
@@ -84,7 +92,10 @@ export function StudentFormDialog({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={submitting || !branch}>
+            <Button
+              type="submit"
+              disabled={submitting || !branch || !section}
+            >
               {submitting
                 ? "Saving..."
                 : editingStudent

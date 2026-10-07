@@ -23,8 +23,7 @@ type Props = {
 };
 
 export function MarksTable({ marksList, students, tests, onEdit, onDelete }: Props) {
-  const studentName = (id: number) =>
-    students.find((s) => s.id === id)?.name ?? `#${id}`;
+  const studentInfo = (id: number) => students.find((s) => s.id === id);
   const testInfo = (id: number) => tests.find((t) => t.id === id);
 
   return (
@@ -50,10 +49,13 @@ export function MarksTable({ marksList, students, tests, onEdit, onDelete }: Pro
           <TableBody>
             {marksList.map((mark) => {
               const test = testInfo(mark.testId);
+              const student = studentInfo(mark.studentId);
               return (
                 <TableRow key={mark.id}>
                   <TableCell className="font-medium py-3">
-                    {studentName(mark.studentId)}
+                    {student
+                      ? `${student.name} (${student.branch} · Section ${student.section ?? "—"})`
+                      : `#${mark.studentId}`}
                   </TableCell>
                   <TableCell>{test?.testName ?? `#${mark.testId}`}</TableCell>
                   <TableCell>

@@ -4,9 +4,12 @@ export type Student = {
   id: number;
   name: string;
   branch: string;
+  section: string | null;
 };
 
-export type StudentInput = Omit<Student, "id">;
+export type StudentInput = Omit<Student, "id" | "section"> & {
+  section: string;
+};
 
 export async function getStudents(): Promise<Student[]> {
   const res = await fetch(BASE_URL, { cache: "no-store" });
